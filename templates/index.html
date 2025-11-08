@@ -1,0 +1,256 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardiac Health Predictor ❤️</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="grid">
+    <h1>Cardiac Health — Risk Predictor ❤️</h1>
+    <p class="subtitle">Enter the patient’s health details below</p>
+
+    <form action="/predict" method="POST" class="form">
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" name="Age" placeholder="e.g. 45" required />
+      </div>
+
+      <div class="form-group">
+        <label>Sex</label>
+        <select name="Sex" required>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Chest Pain Type</label>
+        <select name="ChestPainType" required>
+          <option value="ATA">Typical Angina (ATA)</option>
+          <option value="NAP">Non-Anginal Pain (NAP)</option>
+          <option value="ASY">Asymptomatic (ASY)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Resting Blood Pressure (mm Hg)</label>
+        <input type="number" name="RestingBP" placeholder="e.g. 120" required />
+      </div>
+
+      <div class="form-group">
+        <label>Cholesterol (mg/dL)</label>
+        <input type="number" name="Cholesterol" placeholder="e.g. 200" required />
+      </div>
+
+      <div class="form-group">
+        <label>Fasting Blood Sugar (mg/dL)</label>
+        <input type="number" name="FastingBS" placeholder="e.g. 150" required />
+      </div>
+
+      <div class="form-group">
+        <label>Resting ECG</label>
+        <select name="RestingECG" required>
+          <option value="Normal">Normal</option>
+          <option value="ST">ST</option>
+          <option value="LVH">LVH</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Maximum Heart Rate (bpm)</label>
+        <input type="number" name="MaxHR" placeholder="e.g. 140" required />
+      </div>
+
+      <div class="form-group">
+        <label>Exercise Angina</label>
+        <select name="ExerciseAngina" required>
+          <option value="N">No</option>
+          <option value="Y">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Oldpeak</label>
+        <input type="number" name="Oldpeak" step="0.1" placeholder="e.g. 1.2" required />
+      </div>
+
+      <div class="form-group">
+        <label>ST Slope</label>
+        <select name="ST_Slope" required>
+          <option value="Flat">Flat</option>
+          <option value="Up">UP</option>
+          <option value="Down">Down</option>
+        </select>
+      </div>
+
+      <div class="btn-container">
+        <button type="submit" class="btn-primary">Predict Risk</button>
+        <button type="reset" class="btn-secondary">Reset</button>
+      </div>
+      
+    </form>
+
+    <footer>
+      
+    </footer>
+  </div>
+  </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardiacPredictor</title>
+  <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="static/stylesheet.css">
+  l
+</head>
+
+<body>
+  <!-- Background Heart Image -->
+  <div class="background-heart"></div>
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="container header-content">
+        <div class="logo-container">
+          <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+            </path>
+          </svg>
+        </div>
+        <div>
+          <h1>CardioPredict</h1>
+          <p class="subtitle">Cardiac Arrest Risk Assessment Tool</p>
+        </div>
+      </div>
+    </header>
+    </header>
+    <main class="main-content">
+      <div class="form-container">
+        <div class="card">
+          <!-- Form Background Heart Image -->
+          <div class="form-background-heart"></div>
+
+          <!-- Card Content -->
+          <div class="card-content">
+            <div class="card-header">
+              <div class="card-header-content">
+                <svg class="activity-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <div>
+                  <h2 class="card-title">Health Assessment Form</h2>
+                  <p class="card-description">Please provide accurate information for the best risk
+                    assessment</p>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card-body">
+              <form action="/predict" method="POST" id="healthForm" class="health-form">
+                <div class="form-grid">
+
+                  <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" name="Age" placeholder="e.g. 45" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Sex</label>
+                    <select name="Sex" required>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Chest Pain Type</label>
+                    <select name="ChestPainType" required>
+                      <option value="ATA">Typical Angina (ATA)</option>
+                      <option value="NAP">Non-Anginal Pain (NAP)</option>
+                      <option value="ASY">Asymptomatic (ASY)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Resting Blood Pressure (mm Hg)</label>
+                    <input type="number" name="RestingBP" placeholder="e.g. 120" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Cholesterol (mg/dL)</label>
+                    <input type="number" name="Cholesterol" placeholder="e.g. 200" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Fasting Blood Sugar (mg/dL)</label>
+                    <input type="number" name="FastingBS" placeholder="e.g. 150" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Resting ECG</label>
+                    <select name="RestingECG" required>
+                      <option value="Normal">Normal</option>
+                      <option value="ST">ST</option>
+                      <option value="LVH">LVH</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Maximum Heart Rate (bpm)</label>
+                    <input type="number" name="MaxHR" placeholder="e.g. 140" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Exercise Angina</label>
+                    <select name="ExerciseAngina" required>
+                      <option value="N">No</option>
+                      <option value="Y">Yes</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Oldpeak</label>
+                    <input type="number" name="Oldpeak" step="0.1" placeholder="e.g. 1.2" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label>ST Slope</label>
+                    <select name="ST_Slope" required>
+                      <option value="Flat">Flat</option>
+                      <option value="Up">UP</option>
+                      <option value="Down">Down</option>
+                    </select>
+                  </div>
+              </form>
+              <div class="button-box">
+
+                <button type="submit" class="submit-btn">Calculate Risk Assessment</button>
+                <button type="reset" id="resetBtn" class="reset-btn">Reset Assessment</button>
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

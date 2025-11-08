@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cardiac Risk Result ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .card {
+            background: #f3efefd9;
+            border-radius: 20px;
+            box-shadow: 8px -4px 25px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            padding: 30px 40px;
+            animation: fadeIn 1s cubic-bezier(0.25, 0.1, 0.24, 1.02);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .circle {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 25px auto;
+
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .status {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 25px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2877ac;
+        }
+
+        /* Color themes for risk levels */
+        .low {
+            color: #2ecc71;
+        }
+
+        .medium {
+            color: #f39c12;
+        }
+
+        .high {
+            color: #e74c3c;
+        }
+    </style>
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="card">
+        <h1>Cardiac Risk Prediction 🩺</h1>
+
+        {% if prediction %}
+        {% set risk_class = 'low' if 'Low' in prediction else ('medium' if 'Medium' in prediction else 'high') %}
+        {% set color_code = '#2ecc71' if 'Low' in prediction else ('#f39c12' if 'Medium' in prediction else '#e74c3c')
+        %}
+
+        <!-- Circular Progress Visualization -->
+        <div class="circle">
+            <svg class="progress-ring" width="180" height="180">
+                <circle class="progress-ring__circle" stroke="{{ color_code }}" stroke-width="15" fill="transparent"
+                    r="75" cx="90" cy="90" />
+            </svg>
+            <div class="percentage" id="percentage">0%</div>
+        </div>
+
+        <div class="status {{ risk_class }}">{{ prediction }}</div>
+        {% if message %}
+        <div class="message">{{ message }}</div>
+        {% endif %}
+
+        {% else %}
+        <p class="high">⚠️ No prediction result received. Please try again.</p>
+        {% endif %}
+
+        <a href="/" class="btn-primary">🔁 Predict Again</a>
+    </div>
+
+    <script>
+        // Animate the circular percentage fill
+        const circle = document.querySelector('.progress-ring__circle');
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const percentElem = document.getElementById('percentage');
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        // Read percentage from Flask (you must pass `probability` variable)
+        const targetPercent = "{{ probability|float|default(0) }}";
+        const offset = circumference - (targetPercent / 100) * circumference;
+        let current = 0;
+
+        const animate = setInterval(() => {
+            if (current >= targetPercent) clearInterval(animate);
+            percentElem.textContent = current.toFixed(0) + '%';
+            const newOffset = circumference - (current / 100) * circumference;
+            circle.style.strokeDashoffset = newOffset;
+            current += 1;
+        }, 15);
+    </script>
+</body>
+
+</html>
